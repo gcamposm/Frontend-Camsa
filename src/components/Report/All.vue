@@ -11,16 +11,22 @@
               <th class="text-left">Recibido</th>
               <th class="text-left">Vuelto</th>
               <th class="text-left">Fecha</th>
+              <th class="text-left">Actualizar</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in reports" :key="item.name">
-              <td>{{ item.nameDriver }}</td>
-              <td>{{ item.destiny }}</td>
-              <td>{{ item.amount }}</td>
-              <td>{{ item.received }}</td>
-              <td>{{ item.exchange }}</td>
-              <td>{{ item.date }}</td>
+            <tr v-for="report in reports" :key="report.id">
+              <td>{{ report.nameDriver }}</td>
+              <td>{{ report.destiny }}</td>
+              <td>{{ report.amount }}</td>
+              <td><v-checkbox
+            v-model=report.received
+          ></v-checkbox></td>
+              <td><v-checkbox
+            v-model=report.exchange
+          ></v-checkbox></td>
+              <td>{{ report.date }}</td>
+              <td><v-btn color="success" @click="updateReport(report)">+</v-btn></td>
             </tr>
           </tbody>
         </v-simple-table>
@@ -49,6 +55,16 @@ export default {
       .get(this.serverURL + '/reports/')
       .then(response => {
         this.reports = response.data
+      })
+    },
+    updateReport(report){
+      axios
+      .put(this.serverURL + '/reports/edit/' + report.id, report)
+      .then(response => {
+        this.getAllReports()
+      })
+      .catch(e=>{
+        console.log(e.response)
       })
     }
   },
