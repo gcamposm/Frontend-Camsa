@@ -11,7 +11,6 @@
               <th class="text-left">Recibido</th>
               <th class="text-left">Vuelto</th>
               <th class="text-left">Fecha</th>
-              <th class="text-left">Actualizar</th>
             </tr>
           </thead>
           <tbody>
@@ -19,14 +18,15 @@
               <td>{{ report.nameDriver }}</td>
               <td>{{ report.destiny }}</td>
               <td>{{ report.amount }}</td>
-              <td><v-checkbox
-            v-model=report.received
-          ></v-checkbox></td>
-              <td><v-checkbox
-            v-model=report.exchange
-          ></v-checkbox></td>
+              <td><v-switch
+                v-model=report.received
+                @change="updateReport(report)"
+              ></v-switch></td>
+              <td><v-switch
+                v-model=report.exchange
+                @change="updateReport(report)"
+              ></v-switch></td>
               <td>{{ report.date }}</td>
-              <td><v-btn color="success" @click="updateReport(report)">+</v-btn></td>
             </tr>
           </tbody>
         </v-simple-table>

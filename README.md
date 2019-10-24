@@ -1,4 +1,4 @@
-# frontend-tingeso
+# Camsa
 
 ## Project setup
 ```

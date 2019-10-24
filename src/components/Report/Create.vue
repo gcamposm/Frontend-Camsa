@@ -47,6 +47,7 @@
               label="Monto"
               prefix="$"
               v-model=report.amount
+              @blur="validate()"
             ></v-text-field>
         </v-row>
 
@@ -106,15 +107,13 @@ export default {
   name: 'report-create',
   data () {
     return {
+      amount: 0,
       menu: false,
       report : {},
       reports: [],
       destinys: ['Rancagua', 'San Vicente Tagua Tagua', 'Los Andes', 'San Antonio'],
-      drivers: ['Hernan Fuentes', 'Francisco Saavedra', 'Ricardo Paillan', 'Alexis Duran', 'Ronny Campos', 'Kevin Krause', 'William Martínez', 'Patricio Romero', 'Marcelo Campos', 'Juan Alvarez'],
+      drivers: ['Hernan Fuentes', 'Francisco Saavedra', 'Ricardo Paillan', 'Alexis Duran', 'Ronny Campos', 'Adrian Gongora', 'William Martínez', 'Patricio Romero', 'Marcelo Campos', 'Juan Alvarez'],
     }
-  },
-  created() {
-    //this.getAllReports()
   },
   methods: {
     getAllReports(){
@@ -125,6 +124,7 @@ export default {
       })
     },
     createReport(){
+      this.report.amount = '$' + this.report.amount
       axios
       .post(this.serverURL + '/reports/create', this.report)
       .then(response => {
@@ -138,6 +138,26 @@ export default {
       }).catch(e => {
         console.log(e.response)
       })
+    },
+    validate(){
+      if(this.report.amount>999)
+      {
+        var num = this.report.amount
+        num = num.toString().split('').reverse()
+        var reves = []
+        reves.push(num[0])
+        reves.push(num[1])
+        reves.push(num[2])
+        reves.push('.')
+        for (var i = 3; i <= num.length; i++) {
+          reves.push(num[i])
+        }
+        reves = reves.reverse().join('')
+        this.report.amount = reves
+      }
+    },
+    reportAmount(){
+      this.report.amount
     }
   },
   computed: {
